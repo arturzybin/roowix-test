@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import 'normalize.css';
+import './styles/style.scss';
 
 import { Table } from './components/Table';
-import { TMatrix } from './types';
+import { SelectionLayer } from './components/SelectionLayer';
+import { TMatrix, TSelectionCoords } from './types';
 
 
 function App() {
+   const [selectionCoords, setSelectionCoords] = useState<TSelectionCoords>(null)
+
    const matrix: TMatrix = [
       [1, 0, 1, 0, 0],
       [0, 0, 0, 0, 0],
@@ -15,7 +20,8 @@ function App() {
 
    return (
       <>
-         <Table matrix={matrix} />
+         <Table matrix={matrix} selectionCoords={selectionCoords} />
+         <SelectionLayer setSelectionCoords={setSelectionCoords} />
       </>
    );
 }

@@ -1,14 +1,16 @@
 import React from 'react'
-import { TMatrix } from '../types'
+import { TMatrix, TSelectionCoords } from '../types'
+import { TableCell } from './TableCell'
 
 
 interface IProps {
-   matrix: TMatrix
+   matrix: TMatrix,
+   selectionCoords: TSelectionCoords
 }
 
-export const Table: React.FC<IProps> = ({ matrix }) => {
+export const Table: React.FC<IProps> = ({ matrix, selectionCoords }) => {
    const thead = createThead(matrix[1].length)
-   const tbody = createTbody(matrix)
+   const tbody = createTbody(matrix, selectionCoords)
 
    return (
       <table>
@@ -20,8 +22,8 @@ export const Table: React.FC<IProps> = ({ matrix }) => {
 
 
 function createThead(length: number): JSX.Element {
-   const weekdays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']
-   const theadInner: JSX.Element[] = [<td></td>]
+   const weekdays = ['пн', 'вт', 'ср', 'чт', 'пт']
+   const theadInner: JSX.Element[] = [<td key={7}></td>]
 
    for (let i = 0; i < length; i++) {
       theadInner.push(<td key={i}>{weekdays[i]}</td>)
@@ -31,13 +33,19 @@ function createThead(length: number): JSX.Element {
 }
 
 
-function createTbody(matrix: number[][]): JSX.Element {
-   const tbodyInner: JSX.Element[] = matrix.map((row, index) => {
+function createTbody(matrix: number[][], selectionCoords: TSelectionCoords): JSX.Element {
+   const tbodyInner: JSX.Element[] = matrix.map((row, rowIndex) => {
 
-      const trowInner: JSX.Element[] = row.map((cell) => <td>{ cell }</td> )
+      const trowInner: JSX.Element[] = row.map((cell, cellIndex) => (
+         <TableCell
+            key={cellIndex}
+            isRight={!!cell}
+            selectionCoords={selectionCoords}
+         />
+      ))
 
-      return <tr><td>номер {index}</td> { trowInner }</tr>
+      return <tr key={rowIndex}><td>номер {rowIndex}</td>{trowInner}</tr>
    })
 
-   return <tbody>{ tbodyInner }</tbody>
+   return <tbody>{tbodyInner}</tbody>
 }
