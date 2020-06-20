@@ -9,4 +9,4 @@ export type TSelectionCoords = {
       x: number | null,
       y: number | null
    }
-} | null
+}

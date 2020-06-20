@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { TSelectionCoords } from '../types';
 
 interface IProps {
-   setSelectionCoords: (arg0: TSelectionCoords) => void
+   setSelectionCoords: (selectionCoords: TSelectionCoords) => void
 }
 
 

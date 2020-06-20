@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import 'normalize.css';
 import './styles/style.scss';
@@ -8,34 +8,57 @@ import { SelectionLayer } from './components/SelectionLayer';
 import { TMatrix, TSelectionCoords } from './types';
 
 
-function App() {
-   const [selectionCoords, setSelectionCoords] = useState<TSelectionCoords>(null)
-   const [selectedMatrix, setSelectedMatrix] = useState<number[][]>([
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0]
-   ])
+interface IState {
+   selectionCoords: TSelectionCoords,
+   selectedMatrix: number[][]
+}
 
-   function setSelectedCell(position: [number, number], status: boolean) {
-      const newSelectedMatrix = selectedMatrix.map((row) => [...row])
-      newSelectedMatrix[position[0]][position[1]] = status ? 1 : 0
-      setSelectedMatrix(newSelectedMatrix)
+class App extends React.Component<{}, IState> {
+   state = {
+      selectionCoords: {
+         start: { x: null, y: null },
+         end: { x: null, y: null }
+      },
+      selectedMatrix: [
+         [0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0]
+      ]
    }
 
-   const matrix: TMatrix = [
-      [1, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0],
-      [1, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0]
-   ]
 
-   return (
-      <>
-         <Table matrix={matrix} selectionCoords={selectionCoords} setSelectedCell={setSelectedCell} />
-         <SelectionLayer setSelectionCoords={setSelectionCoords} />
-      </>
-   );
+   setSelectedCell = (position: [number, number], status: boolean): void => {
+      this.setState((prevState: IState) => {
+         const newSelectedMatrix = prevState.selectedMatrix.map((row) => [...row])
+         newSelectedMatrix[position[0]][position[1]] = status ? 1 : 0
+         return { selectedMatrix: newSelectedMatrix }
+      })
+   }
+
+
+   setSelectionCoords = (selectionCoords: TSelectionCoords) => {
+      this.setState({ selectionCoords })
+   }
+
+
+   render() {
+      const { selectionCoords } = this.state
+
+      const matrix: TMatrix = [
+         [1, 0, 1, 0, 0],
+         [0, 0, 0, 0, 0],
+         [1, 0, 1, 0, 0],
+         [0, 0, 0, 0, 0]
+      ]
+
+      return (
+         <>
+            <Table matrix={matrix} selectionCoords={selectionCoords} setSelectedCell={this.setSelectedCell} />
+            <SelectionLayer setSelectionCoords={this.setSelectionCoords} />
+         </>
+      )
+   }
 }
 
 export default App;
