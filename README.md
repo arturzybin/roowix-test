@@ -1,5 +1,7 @@
 # Roowix test by Artur Zybin
 
+Available at https://arturzybin.github.io/roowix-test
+
 ## Running
 
 To run the project with the local server run ```npm start``` inside the project directory
