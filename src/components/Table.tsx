@@ -1,20 +1,20 @@
 import React from 'react'
-import { TMatrix, TSelectionCoords } from '../types'
+import { TMatrix, ISelectionCoords } from '../types'
 import { TableCell } from './TableCell'
 
 
 interface IProps {
    matrix: TMatrix,
-   selectionCoords: TSelectionCoords,
+   selectionCoords: ISelectionCoords,
    setSelectedCell: (position: [number, number], status: boolean) => void
 }
 
 export const Table: React.FC<IProps> = ({ matrix, selectionCoords, setSelectedCell }) => {
    const thead = createThead(matrix[1].length)
-   const tbody = createTbody(matrix, selectionCoords)
+   const tbody = createTbody()
 
 
-   function createTbody(matrix: number[][], selectionCoords: TSelectionCoords): JSX.Element {
+   function createTbody(): JSX.Element {
       const tbodyInner: JSX.Element[] = matrix.map((row, rowIndex) => {
    
          const trowInner: JSX.Element[] = row.map((cell, cellIndex) => {
@@ -29,7 +29,7 @@ export const Table: React.FC<IProps> = ({ matrix, selectionCoords, setSelectedCe
             />)
          })
    
-         return <tr key={rowIndex}><td>номер {rowIndex}</td>{trowInner}</tr>
+         return <tr key={rowIndex}><td>номер {rowIndex+1}</td>{trowInner}</tr>
       })
    
       return <tbody>{tbodyInner}</tbody>

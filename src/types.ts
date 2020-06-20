@@ -1,6 +1,6 @@
 export type TMatrix = number[][]
 
-export type TSelectionCoords = {
+export interface ISelectionCoords {
    start: {
       x: number | null,
       y: number | null
@@ -8,5 +8,16 @@ export type TSelectionCoords = {
    end: {
       x: number | null,
       y: number | null
+   }
+}
+
+export interface IEditCellsPosition {
+   start: {
+      row: number,
+      cell: number
+   },
+   end: {
+      row: number,
+      cell: number
    }
 }

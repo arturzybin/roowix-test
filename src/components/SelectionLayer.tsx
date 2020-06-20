@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { TSelectionCoords } from '../types';
+import React, { useState, useEffect, useRef } from 'react'
+import { ISelectionCoords } from '../types';
 
 interface IProps {
-   setSelectionCoords: (selectionCoords: TSelectionCoords) => void
+   setSelectionCoords: (selectionCoords: ISelectionCoords) => void,
+   handleStopSelection: () => void
 }
 
 
-export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords }) => {
+export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords, handleStopSelection }) => {
    const [isSelection, setIsSelection] = useState<boolean>(false)
    const [startCoords, setStartCoords] = useState<number[] | null[]>([null, null])
    const [endCoords, setEndCoords] = useState<number[] | null[]>([null, null])
 
+   const selectionLayerRef = useRef(null)
+
    useEffect(() => {
-      document.addEventListener('mousedown', startSelection)
-      return () => document.removeEventListener('mousedown', startSelection)
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+      const layer = selectionLayerRef.current as unknown as HTMLElement
+
+      layer.addEventListener('mousedown', startSelection)
+      return () => layer.removeEventListener('mousedown', startSelection)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
 
@@ -24,7 +29,7 @@ export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords }) => {
          start: { x: startCoords[0], y: startCoords[1] },
          end: { x: endCoords[0], y: endCoords[1] }
       })
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [startCoords[0], startCoords[1], endCoords[0], endCoords[1]])
 
 
@@ -44,12 +49,16 @@ export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords }) => {
       setIsSelection(false)
       setStartCoords([null, null])
       setEndCoords([null, null])
+
       setSelectionCoords({
          start: { x: null, y: null },
          end: { x: null, y: null }
       })
+      handleStopSelection()
+
       document.removeEventListener('mousemove', handleSelection)
-      document.removeEventListener('mouseup', stopSelection)
+      const layer = selectionLayerRef.current as unknown as HTMLElement
+      layer.removeEventListener('mouseup', stopSelection)
    }
 
 
@@ -57,10 +66,10 @@ export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords }) => {
    if (areCoordsExist(startCoords, endCoords)) {
       selectionStyles = getSelectionStyles(startCoords as number[], endCoords as number[])
    }
-   
+
    return (
-      <div className="selection-layer">
-         { isSelection && <div className="selection-layer__selection" style={selectionStyles}></div> }
+      <div className="selection-layer" ref={selectionLayerRef}>
+         {isSelection && <div className="selection-layer__selection" style={selectionStyles}></div>}
       </div>
    )
 }

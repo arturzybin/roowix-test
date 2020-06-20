@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react'
-import { TSelectionCoords } from '../types'
+import { ISelectionCoords } from '../types'
 
 interface IProps {
    isRight: boolean,
-   selectionCoords: TSelectionCoords,
+   selectionCoords: ISelectionCoords,
    matrixPosition: [number, number],
    setSelected: (status: boolean) => void
 }
@@ -26,7 +26,7 @@ export const TableCell: React.FC<IProps> = ({ isRight, selectionCoords, setSelec
 }
 
 
-function checkIsSelected(element: HTMLTableElement | null, selectionCoords: TSelectionCoords): boolean {
+function checkIsSelected(element: HTMLTableElement | null, selectionCoords: ISelectionCoords): boolean {
    if (!element || !areSelectionCoordsExist(selectionCoords)) return false
 
    const rect = element.getBoundingClientRect()
@@ -49,7 +49,7 @@ function checkIsSelected(element: HTMLTableElement | null, selectionCoords: TSel
 }
 
 
-function areSelectionCoordsExist(selectionCoords: TSelectionCoords) {
+function areSelectionCoordsExist(selectionCoords: ISelectionCoords) {
    return selectionCoords?.start.x !== null &&
       selectionCoords?.start.y !== null &&
       selectionCoords?.end.x !== null &&

@@ -1,3 +1,7 @@
+* {
+   user-select: none;
+}
+
 @import "./components/selection-layer";
 @import "./components/table";
 @import "./components/editor";
