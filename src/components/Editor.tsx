@@ -37,21 +37,43 @@ export const Editor: React.FC<IProps> = ({ matrixCopy, cellsPosition, closeEdito
             />)
          }
 
-         tbodyInner.push(<tr key={rowIndex}><td>номер {rowIndex + 1}</td>{trowInner}</tr>)
+         tbodyInner.push(
+            <tr key={rowIndex}>
+               <td className="editor__day-number">номер {rowIndex + 1}</td>
+               {trowInner}
+            </tr>
+         )
       }
+
+      const fakeRowInner: JSX.Element[] = []
+      for (let cellIndex = cellsPosition.start.cell; cellIndex <= cellsPosition.end.cell + 1; cellIndex++) {
+         fakeRowInner.push(<td className="editor__fake-cell"></td>)
+      }
+
+      tbodyInner.push(<tr>{fakeRowInner}</tr>)
 
       return <tbody>{tbodyInner}</tbody>
    }
 
 
    return (
-      <div className="editor-container">
-         <table className="editor">
-            {thead}
-            {tbody}
-         </table>
-         <button onClick={closeEditor}>отменить</button>
-         <button onClick={() => applyChanges(editableMatrix)}>применить</button>
+      <div className="background-locker">
+         <div className="editor">
+            <table className="editor__table">
+               {thead}
+               {tbody}
+            </table>
+            <button
+               className="editor__button editor__button_type_decline"
+               onClick={closeEditor}>
+               Отменить
+            </button>
+            <button
+               className="editor__button editor__button_type_accept"
+               onClick={() => applyChanges(editableMatrix)}>
+               Применить
+            </button>
+         </div>
       </div>
    )
 }
@@ -62,7 +84,7 @@ function createThead(start: number, end: number): JSX.Element {
    const theadInner: JSX.Element[] = [<td key={7}></td>]
 
    for (let i = start; i <= end; i++) {
-      theadInner.push(<td key={i}>{weekdays[i]}</td>)
+      theadInner.push(<td key={i} className="editor__head-cell">{weekdays[i]}</td>)
    }
 
    return <thead><tr>{theadInner}</tr></thead>

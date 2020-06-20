@@ -16,28 +16,33 @@ export const Table: React.FC<IProps> = ({ matrix, selectionCoords, setSelectedCe
 
    function createTbody(): JSX.Element {
       const tbodyInner: JSX.Element[] = matrix.map((row, rowIndex) => {
-   
+
          const trowInner: JSX.Element[] = row.map((cell, cellIndex) => {
             const setSelected = (status: boolean) => setSelectedCell([rowIndex, cellIndex], status)
-   
+
             return (<TableCell
                key={cellIndex}
                isRight={!!cell}
                selectionCoords={selectionCoords}
-               matrixPosition={ [rowIndex, cellIndex] }
+               matrixPosition={[rowIndex, cellIndex]}
                setSelected={setSelected}
             />)
          })
-   
-         return <tr key={rowIndex}><td>номер {rowIndex+1}</td>{trowInner}</tr>
+
+         return (
+            <tr key={rowIndex}>
+               <td className="table__day-number">номер {rowIndex + 1}</td>
+               {trowInner}
+            </tr>
+         )
       })
-   
+
       return <tbody>{tbodyInner}</tbody>
    }
 
 
    return (
-      <table>
+      <table className="table">
          {thead}
          {tbody}
       </table>
@@ -50,7 +55,7 @@ function createThead(length: number): JSX.Element {
    const theadInner: JSX.Element[] = [<td key={7}></td>]
 
    for (let i = 0; i < length; i++) {
-      theadInner.push(<td key={i}>{weekdays[i]}</td>)
+      theadInner.push(<td key={i} className="table__head-cell">{weekdays[i]}</td>)
    }
 
    return <thead><tr>{theadInner}</tr></thead>

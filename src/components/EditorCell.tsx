@@ -14,7 +14,12 @@ export const EditorCell: React.FC<IProps> = ({isRight, handleChangeStatus}) => {
       handleChangeStatus(!status)
    }
 
+   let className = 'editor__cell '
+   if (status) {
+      className += 'editor__cell_checked'
+   }
+
    return (
-      <td onClick={toggleStatus}>{status ? 1 : 0}</td>
+      <td onClick={toggleStatus} className={className}></td>
    )
 }

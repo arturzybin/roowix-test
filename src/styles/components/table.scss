@@ -1,7 +1,52 @@
 .table {
+   font-weight: bold;
+
+   margin: auto;
+   margin-top: 10vh;
+
+   text-align: center;
+
+   color: #5d5c5d;
+
+   &__head-cell {
+      line-height: 48px;
+   }
+
+   &__day-number {
+      padding-right: 25px;
+   }
+
    &__cell {
+      width: 50px;
+      height: 50px;
+
+      border: 1px solid transparent;
+
+      &::before {
+         line-height: 48px;
+
+         display: inline-block;
+
+         width: 100%;
+
+         content: '✘';
+         text-align: center;
+         vertical-align: middle;
+
+         color: #f0623e;
+         border-radius: 15px;
+         background-color: #ffbdbe;
+      }
+
+      &_right::before {
+         content: '✔';
+
+         color: #48ba66;
+         background-color: #cbe7c9;
+      }
+
       &_selected {
-         border: 1px solid #000;
+         border: 1px solid #4e9ed4;
       }
    }
 }

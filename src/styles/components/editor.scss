@@ -1,14 +1,101 @@
-.editor-container {
+.background-locker {
    position: absolute;
+   top: 0;
+
    width: 100%;
    height: 100vh;
-   top: 0;
-   overflow: hidden;
+   padding-left: 50%;
 }
 
 .editor {
-   margin-left: 500px;
-   * {
-      cursor: default;
+   font-weight: bold;
+
+   display: inline-block;
+
+   margin-top: 10vh;
+   padding: 15px;
+
+   transform: translateX(-50%);
+   text-align: right;
+
+   background-color: #eee;
+
+
+   &__table {
+      border-collapse: collapse;
+
+      th,
+      tr {
+         border-bottom: 1px solid #c3c3c3;
+
+         &:last-child {
+            border-bottom: none;
+         }
+      }
+
+      td {
+         border-right: 1px solid #c3c3c3;
+      }
+   }
+
+   &__head-cell {
+      line-height: 50px;
+
+      text-align: center;
+
+      color: #c3c3c3;
+   }
+
+   &__day-number {
+      color: #5d5c5d;
+   }
+
+   &__cell {
+      width: 30px;
+      height: 30px;
+
+      &::before {
+         display: block;
+
+         box-sizing: border-box;
+         width: 25px;
+         height: 25px;
+         margin: 2px;
+
+         content: '';
+
+         border: 2px solid #585758;
+         border-radius: 7px;
+      }
+
+      &_checked::before {
+         background-color: #1db7d4;
+      }
+   }
+
+   &__fake-cell {
+      height: 40px;
+   }
+
+   &__button {
+      font-weight: bold;
+
+      border: none;
+      outline: none;
+
+      &_type {
+         &_decline {
+            color: #898b92;
+            &:hover {
+               color: #65676e;
+            }
+         }
+         &_accept {
+            color: #33b8cc;
+            &:hover {
+               color: #2fa9bb;
+            }
+         }
+      }
    }
 }

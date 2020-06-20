@@ -18,10 +18,12 @@ export const TableCell: React.FC<IProps> = ({ isRight, selectionCoords, setSelec
    }, [isSelected])
 
 
-   const className = isSelected ? 'table__cell table__cell_selected' : 'table__cell'
+   let className = 'table__cell '
+   className += isSelected ? 'table__cell_selected ' : ''
+   className += isRight ? 'table__cell_right' : ''
 
    return (
-      <td ref={ref} className={className}>{isRight ? 1 : 0}</td>
+      <td ref={ref} className={className} />
    )
 }
 

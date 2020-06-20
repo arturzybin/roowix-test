@@ -1,7 +1,15 @@
 * {
+   font-family: Arial, Helvetica, sans-serif;
+
+   box-sizing: border-box;
+
    user-select: none;
 }
 
-@import "./components/selection-layer";
-@import "./components/table";
-@import "./components/editor";
+body {
+   background-color: 	#f9f8f6;
+}
+
+@import './components/selection-layer';
+@import './components/table';
+@import './components/editor';
