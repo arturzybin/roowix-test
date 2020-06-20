@@ -1,16 +1,22 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { TSelectionCoords } from '../types'
 
 interface IProps {
    isRight: boolean,
-   selectionCoords: TSelectionCoords
+   selectionCoords: TSelectionCoords,
+   matrixPosition: [number, number],
+   setSelected: (status: boolean) => void
 }
 
 
-export const TableCell: React.FC<IProps> = ({ isRight, selectionCoords }) => {
+export const TableCell: React.FC<IProps> = ({ isRight, selectionCoords, setSelected }) => {
    const ref = useRef(null)
-
    const isSelected = checkIsSelected(ref.current, selectionCoords)
+   useEffect(() => {
+      setSelected(isSelected)
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [isSelected])
+
 
    const className = isSelected ? 'table__cell table__cell_selected' : 'table__cell'
 
