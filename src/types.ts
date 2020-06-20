@@ -1,12 +1,12 @@
 export type TMatrix = number[][]
 
 export type TSelectionCoords = {
-   first: {
-      x: number,
-      y: number
+   start: {
+      x: number | null,
+      y: number | null
    },
-   second: {
-      x: number,
-      y: number
+   end: {
+      x: number | null,
+      y: number | null
    }
 } | null

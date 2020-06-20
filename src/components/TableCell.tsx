@@ -21,7 +21,7 @@ export const TableCell: React.FC<IProps> = ({ isRight, selectionCoords }) => {
 
 
 function checkIsSelected(element: HTMLTableElement | null, selectionCoords: TSelectionCoords): boolean {
-   if (!element || !selectionCoords) return false
+   if (!element || !areSelectionCoordsExist(selectionCoords)) return false
 
    const rect = element.getBoundingClientRect()
    const elLeft = rect.x
@@ -29,10 +29,10 @@ function checkIsSelected(element: HTMLTableElement | null, selectionCoords: TSel
    const elTop = window.pageYOffset + rect.y
    const elBottom = elTop + rect.height
 
-   const selectionLeft = Math.min(selectionCoords.first.x, selectionCoords.second.x)
-   const selectionRight = Math.max(selectionCoords.first.x, selectionCoords.second.x)
-   const selectionTop = Math.min(selectionCoords.first.y, selectionCoords.second.y)
-   const selectionBottom = Math.max(selectionCoords.first.y, selectionCoords.second.y)
+   const selectionLeft = Math.min(selectionCoords?.start.x as number, selectionCoords?.end.x as number)
+   const selectionRight = Math.max(selectionCoords?.start.x as number, selectionCoords?.end.x as number)
+   const selectionTop = Math.min(selectionCoords?.start.y as number, selectionCoords?.end.y as number)
+   const selectionBottom = Math.max(selectionCoords?.start.y as number, selectionCoords?.end.y  as number)
 
    if (elRight > selectionLeft &&
       elLeft < selectionRight &&
@@ -40,4 +40,12 @@ function checkIsSelected(element: HTMLTableElement | null, selectionCoords: TSel
       elTop < selectionBottom) return true
 
    return false
+}
+
+
+function areSelectionCoordsExist(selectionCoords: TSelectionCoords) {
+   return selectionCoords?.start.x !== null &&
+      selectionCoords?.start.y !== null &&
+      selectionCoords?.end.x !== null &&
+      selectionCoords?.end.y !== null
 }
