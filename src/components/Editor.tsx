@@ -11,10 +11,10 @@ interface IProps {
 }
 
 export const Editor: React.FC<IProps> = ({ matrixCopy, cellsPosition, closeEditor, applyChanges }) => {
+   const [editableMatrix, setEditableMatrix] = useState<number[][]>(matrixCopy)
+
    const thead = createThead(cellsPosition.start.cell, cellsPosition.end.cell)
    const tbody = createTbody()
-
-   const [editableMatrix, setEditableMatrix] = useState<number[][]>(matrixCopy)
 
 
    function createTbody(): JSX.Element {
@@ -22,8 +22,8 @@ export const Editor: React.FC<IProps> = ({ matrixCopy, cellsPosition, closeEdito
 
       for (let rowIndex = cellsPosition.start.row; rowIndex <= cellsPosition.end.row; rowIndex++) {
          const trowInner: JSX.Element[] = []
-
          for (let cellIndex = cellsPosition.start.cell; cellIndex <= cellsPosition.end.cell; cellIndex++) {
+
             const handleChangeStatus = (status: boolean) => {
                const newEditableMatrix = editableMatrix.map((row) => [...row])
                newEditableMatrix[rowIndex][cellIndex] = status ? 1 : 0
@@ -45,12 +45,7 @@ export const Editor: React.FC<IProps> = ({ matrixCopy, cellsPosition, closeEdito
          )
       }
 
-      const fakeRowInner: JSX.Element[] = []
-      for (let cellIndex = cellsPosition.start.cell; cellIndex <= cellsPosition.end.cell + 1; cellIndex++) {
-         fakeRowInner.push(<td className="editor__fake-cell"></td>)
-      }
-
-      tbodyInner.push(<tr>{fakeRowInner}</tr>)
+      tbodyInner.push(createDecorativeRow(cellsPosition, editableMatrix.length))
 
       return <tbody>{tbodyInner}</tbody>
    }
@@ -65,12 +60,14 @@ export const Editor: React.FC<IProps> = ({ matrixCopy, cellsPosition, closeEdito
             </table>
             <button
                className="editor__button editor__button_type_decline"
-               onClick={closeEditor}>
+               onClick={closeEditor}
+            >
                Отменить
             </button>
             <button
                className="editor__button editor__button_type_accept"
-               onClick={() => applyChanges(editableMatrix)}>
+               onClick={() => applyChanges(editableMatrix)}
+            >
                Применить
             </button>
          </div>
@@ -88,4 +85,14 @@ function createThead(start: number, end: number): JSX.Element {
    }
 
    return <thead><tr>{theadInner}</tr></thead>
+}
+
+
+function createDecorativeRow(cellsPosition: IEditCellsPosition, matrixLength: number): JSX.Element {
+   const fakeRowInner: JSX.Element[] = []
+   for (let cellIndex = cellsPosition.start.cell; cellIndex <= cellsPosition.end.cell + 1; cellIndex++) {
+      fakeRowInner.push(<td className="editor__fake-cell" key={cellIndex}></td>)
+   }
+
+   return (<tr key={matrixLength}>{fakeRowInner}</tr>)
 }
