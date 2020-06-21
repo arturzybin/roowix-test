@@ -50,3 +50,51 @@
       }
    }
 }
+
+
+.selected-cells-border {
+   position: absolute;
+
+   border: 1px solid #4e9ed4;
+
+   &__size-label {
+      font-size: 12px;
+      font-weight: bold;
+
+      position: absolute;
+      bottom: -15px;
+
+      width: 100%;
+
+      text-align: center;
+
+      color: #4e9ed4;
+   }
+
+   &__angle-square {
+      position: absolute;
+
+      width: 8px;
+      height: 8px;
+
+      border: 1px solid #4e9ed4;
+      background-color: #f9f8f6;
+
+      &:nth-child(1) {
+         top: -4px;
+         left: -4px;
+      }
+      &:nth-child(2) {
+         top: -4px;
+         right: -4px;
+      }
+      &:nth-child(3) {
+         right: -4px;
+         bottom: -4px;
+      }
+      &:nth-child(4) {
+         bottom: -4px;
+         left: -4px;
+      }
+   }
+}

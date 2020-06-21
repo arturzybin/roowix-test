@@ -11,7 +11,7 @@ export interface ISelectionCoords {
    }
 }
 
-export interface IEditCellsPosition {
+export interface ISelectedCellsPosition {
    start: {
       row: number,
       cell: number

@@ -1,15 +1,17 @@
-import React from 'react'
-import { TMatrix, ISelectionCoords } from '../types'
+import React, { useRef } from 'react'
+import { TMatrix, ISelectionCoords, ISelectedCellsPosition } from '../types'
 import { TableCell } from './TableCell'
 
 
 interface IProps {
    matrix: TMatrix,
    selectionCoords: ISelectionCoords,
-   setSelectedCell: (position: [number, number], status: boolean) => void
+   setSelectedCell: (position: [number, number], status: boolean) => void,
+   selectedCellsPosition: ISelectedCellsPosition,
 }
 
-export const Table: React.FC<IProps> = ({ matrix, selectionCoords, setSelectedCell }) => {
+export const Table: React.FC<IProps> = ({ matrix, selectionCoords, setSelectedCell, selectedCellsPosition }) => {
+   const tableRef = useRef(null)
    const thead = createThead(matrix[1].length)
    const tbody = createTbody()
 
@@ -40,12 +42,17 @@ export const Table: React.FC<IProps> = ({ matrix, selectionCoords, setSelectedCe
       return <tbody>{tbodyInner}</tbody>
    }
 
+   const selectedCellsBorder = createSelectedCellsBorder(tableRef, selectedCellsPosition)
+
 
    return (
-      <table className="table">
-         {thead}
-         {tbody}
-      </table>
+      <>
+         <table ref={tableRef} className="table">
+            {thead}
+            {tbody}
+         </table>
+         {selectedCellsBorder}
+      </>
    )
 }
 
@@ -59,4 +66,30 @@ function createThead(length: number): JSX.Element {
    }
 
    return <thead><tr>{theadInner}</tr></thead>
+}
+
+
+function createSelectedCellsBorder(tableRef: React.MutableRefObject<null>, cellsPosition: ISelectedCellsPosition): JSX.Element {
+   if (cellsPosition.start.row === -1
+      || cellsPosition.start.cell === -1
+      || cellsPosition.end.row === -1
+      || cellsPosition.end.cell === -1
+      || !tableRef.current
+   ) return (<></>)
+
+   const width = (cellsPosition.end.cell - cellsPosition.start.cell + 1) * 52 - 2
+   const height = (cellsPosition.end.row - cellsPosition.start.row + 1) * 54 - 2
+   const table = tableRef.current as unknown as HTMLTableElement
+   const left = table.rows[0].cells[cellsPosition.start.cell + 1].getBoundingClientRect().left
+   const top = table.rows[cellsPosition.start.row + 1].getBoundingClientRect().top + window.pageYOffset
+
+   return (
+      <div className="selected-cells-border" style={{ left, top, width, height }}>
+         <div className="selected-cells-border__angle-square"></div>
+         <div className="selected-cells-border__angle-square"></div>
+         <div className="selected-cells-border__angle-square"></div>
+         <div className="selected-cells-border__angle-square"></div>
+         <div className="selected-cells-border__size-label">{width}×{height}</div>
+      </div>
+   )
 }

@@ -3,11 +3,11 @@ import { ISelectionCoords } from '../types';
 
 interface IProps {
    setSelectionCoords: (selectionCoords: ISelectionCoords) => void,
-   handleStopSelection: () => void
+   openEditor: () => void
 }
 
 
-export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords, handleStopSelection }) => {
+export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords, openEditor }) => {
    const [isSelection, setIsSelection] = useState<boolean>(false)
    const [startCoords, setStartCoords] = useState<number[] | null[]>([null, null])
    const [endCoords, setEndCoords] = useState<number[] | null[]>([null, null])
@@ -16,7 +16,6 @@ export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords, handleSto
 
    useEffect(() => {
       const layer = selectionLayerRef.current as unknown as HTMLElement
-
       layer.addEventListener('mousedown', startSelection)
       return () => layer.removeEventListener('mousedown', startSelection)
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,8 +36,10 @@ export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords, handleSto
       setIsSelection(true)
       setStartCoords([event.pageX, event.pageY])
       setEndCoords([event.pageX, event.pageY])
+
+      const layer = selectionLayerRef.current as unknown as HTMLElement
       document.addEventListener('mousemove', handleSelection)
-      document.addEventListener('mouseup', stopSelection)
+      layer.addEventListener('mouseup', stopSelection)
    }
 
    function handleSelection(event: MouseEvent) {
@@ -54,10 +55,10 @@ export const SelectionLayer: React.FC<IProps> = ({ setSelectionCoords, handleSto
          start: { x: null, y: null },
          end: { x: null, y: null }
       })
-      handleStopSelection()
+      openEditor()
 
-      document.removeEventListener('mousemove', handleSelection)
       const layer = selectionLayerRef.current as unknown as HTMLElement
+      document.removeEventListener('mousemove', handleSelection)
       layer.removeEventListener('mouseup', stopSelection)
    }
 

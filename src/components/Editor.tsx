@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { IEditCellsPosition } from '../types'
+import { ISelectedCellsPosition } from '../types'
 import { EditorCell } from './EditorCell'
 
 
 interface IProps {
    matrixCopy: number[][],
-   cellsPosition: IEditCellsPosition,
+   cellsPosition: ISelectedCellsPosition,
    closeEditor: () => void
    applyChanges: (newMatrix: number[][]) => void
 }
@@ -88,7 +88,7 @@ function createThead(start: number, end: number): JSX.Element {
 }
 
 
-function createDecorativeRow(cellsPosition: IEditCellsPosition, matrixLength: number): JSX.Element {
+function createDecorativeRow(cellsPosition: ISelectedCellsPosition, matrixLength: number): JSX.Element {
    const fakeRowInner: JSX.Element[] = []
    for (let cellIndex = cellsPosition.start.cell; cellIndex <= cellsPosition.end.cell + 1; cellIndex++) {
       fakeRowInner.push(<td className="editor__fake-cell" key={cellIndex}></td>)
